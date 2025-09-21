@@ -7,6 +7,7 @@ import CartContext from './Utilities/Context';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './Components/Home';
 import Cart from './Components/Cart';
+import InvoiceHistory from './Components/InvoiceHistory';
 
 function App() {
   const [cartItems, setCartIems] = useState([]);
@@ -17,7 +18,17 @@ function App() {
     [
       {
         path: "/",
-        element: <Home/>
+        element: <Home/>,
+        children: [
+          {
+            path: "/",
+            element: <Dashboard />
+          },
+          {
+            path: "/history",
+            element: <InvoiceHistory/>
+          }
+        ]
       }
     ]
   )

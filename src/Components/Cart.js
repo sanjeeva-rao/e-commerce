@@ -8,6 +8,20 @@ const Cart = ({cartItems, setCartIems, subTotalAmount, discount, setDiscount, se
     const printContent = invoiceRef.current;
     if (!printContent) return;
 
+     // ✅ Create invoice object
+    const invoiceData = {
+      items: cartItems,
+      subTotalAmount,
+      discount,
+      grandTotal: subTotalAmount - (subTotalAmount * discount) / 100,
+      date: new Date().toLocaleString()
+    };
+
+    // ✅ Store multiple invoices
+    const invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+    invoices.push(invoiceData);
+    localStorage.setItem("invoices", JSON.stringify(invoices));
+
     const printWindow = window.open("", "_blank");
     const date = new Date();
     const orderNo = Math.floor(Math.random() * 1000000);

@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Header from "./Header"
 const Home = () => {
@@ -6,7 +7,7 @@ const Home = () => {
         <Header />
 
         {/* Dashboard */}
-        <Dashboard />
+        <Outlet />
       </div>
 }
 export default Home;
