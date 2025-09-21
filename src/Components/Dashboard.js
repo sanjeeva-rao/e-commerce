@@ -12,9 +12,17 @@ const Dashboard = () => {
             setDefaultCrackers(crackersData);
         },[]
     )
-    return <div className="mt-12 flex">
-        <LeftDB crackers = {crackers} setCrackers = {setCrackers} defaultCrackers = {defaultCrackers}/>
+    return <div className="flex space-x-4 p-4 h-[100vh]">
+      {/* Left Section */}
+      <div className="w-[60%] overflow-y-auto border rounded-lg p-2 mt-12">
+        <LeftDB crackers={crackers} setCrackers={setCrackers} defaultCrackers={defaultCrackers} />
+      </div>
+
+      {/* Right Section */}
+      <div className="w-[40%] overflow-y-auto border rounded-lg p-2">
         <RightDB />
+      </div>
     </div>
+    
 }
 export default Dashboard;

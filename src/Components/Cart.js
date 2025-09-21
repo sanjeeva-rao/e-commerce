@@ -13,9 +13,8 @@ const Cart = ({ cartItems, setCartIems, subTotalAmount, discount, setDiscount, s
       date: new Date().toLocaleString(),
     };
     const invoices = JSON.parse(localStorage.getItem("invoices")) || [];
-    invoices.push(invoiceData);
+    invoices.unshift(invoiceData);
     localStorage.setItem("invoices", JSON.stringify(invoices));
-
     const printWindow = window.open("", "_blank", "width=400,height=600");
     const orderNo = Math.floor(Math.random() * 1000000).toString().padStart(6, "0");
 
@@ -35,7 +34,13 @@ const Cart = ({ cartItems, setCartIems, subTotalAmount, discount, setDiscount, s
               padding: 0;
               width: 350px;
             }
-            .invoice { width: 100%; padding: 5px; margin: 0 auto; }
+            .invoice {
+              width: 350px;
+              padding: 5px;
+              margin: 0 auto;
+              background: #fff;
+              color: #000;
+            }
             .center { text-align: center; }
             .bold { font-weight: 700; }
             .small { font-size: 14px; font-weight: 600; }
@@ -57,15 +62,17 @@ const Cart = ({ cartItems, setCartIems, subTotalAmount, discount, setDiscount, s
           </style>
         </head>
         <body>
-          ${document.getElementById("live-invoice").innerHTML}
+          ${document.getElementById("live-invoice").outerHTML}
         </body>
       </html>
     `);
 
     printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    printWindow.close();
+    printWindow.onload = () => {
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+    };
   };
 
   const clearCart = () => {
@@ -95,7 +102,10 @@ const Cart = ({ cartItems, setCartIems, subTotalAmount, discount, setDiscount, s
       </div>
 
       {/* Live Preview */}
-      <div id="live-invoice" className="border border-gray-400 p-3 w-[350px] bg-white text-black">
+      <div
+        id="live-invoice"
+        className="invoice border border-gray-400 p-3 w-[350px] bg-white text-black text-[15px] leading-snug font-semibold"
+      >
         <div className="text-center text-lg font-bold">{shop_name.toUpperCase()}</div>
         <div className="text-center text-sm font-semibold">{address}</div>
         <div className="text-center text-sm font-semibold">{mobile_number}</div>
@@ -117,14 +127,18 @@ const Cart = ({ cartItems, setCartIems, subTotalAmount, discount, setDiscount, s
             <div className="w-[55%]">{item.name}</div>
             <div className="w-[10%] text-right">{item.numberOfItems}</div>
             <div className="w-[15%] text-right">{item.price}.00</div>
-            <div className="w-[20%] text-right">{item.numberOfItems * parseInt(item.price)}.00</div>
+            <div className="w-[20%] text-right">
+              {item.numberOfItems * parseInt(item.price)}.00
+            </div>
           </div>
         ))}
 
         <div className="border-b border-dashed border-black my-1"></div>
         <div className="flex justify-between text-sm font-medium">
           <span>Items: {cartItems.length}</span>
-          <span>Total Qty: {cartItems.reduce((acc, item) => acc + item.numberOfItems, 0)}</span>
+          <span>
+            Total Qty: {cartItems.reduce((acc, item) => acc + item.numberOfItems, 0)}
+          </span>
         </div>
         <div className="flex justify-between text-sm font-bold">
           <span>Sub Total:</span>
