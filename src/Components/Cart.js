@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { shop_name } from "../Utilities/constants";
+import { address, mobile_number, shop_name } from "../Utilities/constants";
 
 const Cart = ({cartItems, setCartIems, subTotalAmount, discount, setDiscount, setSubTotalAmount}) => {
   const invoiceRef = useRef();
@@ -25,7 +25,7 @@ const Cart = ({cartItems, setCartIems, subTotalAmount, discount, setDiscount, se
               color: #000;
             }
             .invoice {
-              width: 300px; 
+              width: 350px; 
               margin: 0 auto;
               padding: 10px 5px;
             }
@@ -48,6 +48,8 @@ const Cart = ({cartItems, setCartIems, subTotalAmount, discount, setDiscount, se
         <body>
           <div class="invoice">
             <div class="center header bold">${shop_name.toUpperCase()}</div>
+            <div class="center header">${address}</div>
+            <div class="center header">${mobile_number}</div>
             <div class="center small bold">CASH BILL</div>
             <div class="center small">Order No: ${orderNo}</div>
             <div class="center small">${date.toLocaleString()}</div>

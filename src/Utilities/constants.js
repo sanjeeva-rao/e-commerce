@@ -22,3 +22,5 @@ export const crackersData = [
 ]
 
 export const shop_name = "Sri Raghavendra crackers";
+export const address = "Civil Line, Narayanpet, Telangana, India 509120"
+export const mobile_number = 7731969514
