@@ -10,7 +10,7 @@ const Header = () => {
                 <ul className="flex gap-6">
                 <li className="hover:underline cursor-pointer" onClick={()=>navigate("/")}>Home</li>
                 <li className="hover:underline cursor-pointer" onClick={()=>navigate("/report")} >Report</li>
-                <li className="hover:underline cursor-pointer" onClick={()=>navigate("/history")}>History</li>
+                <li className="hover:underline cursor-pointer">Contact</li>
                 </ul>
             </nav>
             </div>

@@ -1,45 +1,43 @@
-import logo from './logo.svg';
 import './App.css';
-import Header from './Components/Header';
 import Dashboard from './Components/Dashboard';
 import { useState } from 'react';
 import CartContext from './Utilities/Context';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './Components/Home';
-import Cart from './Components/Cart';
 import InvoiceHistory from './Components/InvoiceHistory';
 import SalesReport from './Components/SalesReport';
+import useKeyboardShortcuts from './Utilities/useKeyboardShortcuts';
+
+function AppContent() {
+  useKeyboardShortcuts(); // hook inside router context
+  return (
+    <Routes>
+      <Route path="/" element={<Home />}>
+        <Route index element={<Dashboard />} />
+        <Route path="history" element={<InvoiceHistory />} />
+        <Route path="report" element={<SalesReport />} />
+      </Route>
+    </Routes>
+  );
+}
 
 function App() {
   const [cartItems, setCartIems] = useState([]);
   const [subTotalAmount, setSubTotalAmount] = useState(0);
   const [discount, setDiscount] = useState(0);
 
-  const browserRouter = createBrowserRouter(
-    [
-      {
-        path: "/",
-        element: <Home/>,
-        children: [
-          {
-            path: "/",
-            element: <Dashboard />
-          },
-          {
-            path: "/history",
-            element: <InvoiceHistory/>
-          },
-          {
-            path: "/report",
-            element: <SalesReport />
-          }
-        ]
-      }
-    ]
-  )
   return (
-    <CartContext.Provider value={{cartItems: cartItems, setCartIems, subTotalAmount: subTotalAmount, setSubTotalAmount, discount: discount, setDiscount}}>
-      <RouterProvider router={browserRouter} />
+    <CartContext.Provider value={{
+      cartItems,
+      setCartIems,
+      subTotalAmount,
+      setSubTotalAmount,
+      discount,
+      setDiscount
+    }}>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
     </CartContext.Provider>
   );
 }
