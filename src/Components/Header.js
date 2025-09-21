@@ -9,8 +9,8 @@ const Header = () => {
             <nav>
                 <ul className="flex gap-6">
                 <li className="hover:underline cursor-pointer" onClick={()=>navigate("/")}>Home</li>
-                <li className="hover:underline cursor-pointer" onClick={()=>navigate("/history")} >Products</li>
-                <li className="hover:underline cursor-pointer">Contact</li>
+                <li className="hover:underline cursor-pointer" onClick={()=>navigate("/report")} >Report</li>
+                <li className="hover:underline cursor-pointer" onClick={()=>navigate("/history")}>History</li>
                 </ul>
             </nav>
             </div>

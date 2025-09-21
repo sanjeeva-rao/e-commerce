@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './Components/Home';
 import Cart from './Components/Cart';
 import InvoiceHistory from './Components/InvoiceHistory';
+import SalesReport from './Components/SalesReport';
 
 function App() {
   const [cartItems, setCartIems] = useState([]);
@@ -27,6 +28,10 @@ function App() {
           {
             path: "/history",
             element: <InvoiceHistory/>
+          },
+          {
+            path: "/report",
+            element: <SalesReport />
           }
         ]
       }
