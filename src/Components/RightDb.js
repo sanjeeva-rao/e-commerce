@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import CartContext from "../Utilities/Context";
 import { useNavigate } from "react-router-dom";
+import Cart from "./Cart";
 
 const RightDB = () => {
     const {cartItems, setCartIems, subTotalAmount, setSubTotalAmount, discount, setDiscount} = useContext(CartContext);
-    const navigate = useNavigate();
     
     const updateCartItems = (item,val) => {
         item.numberOfItems += val;
@@ -13,11 +13,6 @@ const RightDB = () => {
         setCartIems(dummy);
     }
 
-    const clearCart = () => {
-        setCartIems([]);
-        setDiscount(0);
-        setSubTotalAmount(0);
-    }
     
     return <div className="w-[40%] border border-black mt-10 rounded-l-lg">
         <div className="px-4 py-2">
@@ -40,23 +35,20 @@ const RightDB = () => {
                 </div>)
             }
             {
-                cartItems.length !== 0 && <div className="py-4 text-blue-600">
+                cartItems.length !== 0 && <div className="py-4">
                     <div className="flex justify-between">
                         <div>Sub Total</div>
                         <div>₹{subTotalAmount}</div>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between py-2">
                         <div>Discount {"("+discount + "%"+")"} <input type="number" className="w-14 border border-black px-2" min={0} value={discount} onChange={(e)=>setDiscount(e.target.value < 0 ? 0 : e.target.value)}/></div>
                         <div>₹{subTotalAmount*discount/100}</div>
                     </div>
                     <div className="flex justify-between">
                         <div>Total Amount</div>
-                        <div>{subTotalAmount - (subTotalAmount*discount/100)}</div>
+                        <div>₹{subTotalAmount - (subTotalAmount*discount/100)}</div>
                     </div>
-                    <div className="flex justify-between my-8">
-                        <div className="bg-blue-500 text-black px-2 py-1 rounded-lg cursor-pointer" onClick={clearCart}>Clear Cart</div>
-                        <div className="bg-blue-500 text-black px-2 py-1 rounded-lg cursor-pointer" onClick={()=>navigate("/cart")}>Submit</div>
-                    </div>
+                    <Cart cartItems = {cartItems} setCartIems = {setCartIems} subTotalAmount = {subTotalAmount} discount = {discount} setDiscount = {setDiscount} setSubTotalAmount =  {setSubTotalAmount}/>
                 </div>
             }
         </div>

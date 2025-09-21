@@ -18,10 +18,6 @@ function App() {
       {
         path: "/",
         element: <Home/>
-      },
-      {
-        path: "/cart",
-        element: <Cart/>
       }
     ]
   )
