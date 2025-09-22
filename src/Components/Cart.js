@@ -1,10 +1,19 @@
 import { useRef } from "react";
 import { address, mobile_number, shop_name } from "../Utilities/constants";
 
-const Cart = ({ cartItems, setCartIems, subTotalAmount, discount, setDiscount, setSubTotalAmount }) => {
+const Cart = ({
+  cartItems,
+  setCartIems,
+  subTotalAmount,
+  discount,
+  setDiscount,
+  setSubTotalAmount,
+}) => {
   const invoiceRef = useRef();
 
   const handlePrint = () => {
+    if (!invoiceRef.current) return;
+
     const invoiceData = {
       items: cartItems,
       subTotalAmount,
@@ -12,62 +21,54 @@ const Cart = ({ cartItems, setCartIems, subTotalAmount, discount, setDiscount, s
       grandTotal: subTotalAmount - (subTotalAmount * discount) / 100,
       date: new Date().toLocaleString(),
     };
+
+    // Store latest invoice at the top
     const invoices = JSON.parse(localStorage.getItem("invoices")) || [];
     invoices.unshift(invoiceData);
     localStorage.setItem("invoices", JSON.stringify(invoices));
-    const printWindow = window.open("", "_blank", "width=400,height=600");
-    const orderNo = Math.floor(Math.random() * 1000000).toString().padStart(6, "0");
 
+    // Open print window
+    const printWindow = window.open("", "_blank", "width=400,height=600");
+
+    // Clone current invoice preview
+    const invoiceHTML = invoiceRef.current.outerHTML;
+
+    // Copy existing stylesheets from main window
+    const styles = Array.from(document.querySelectorAll("link[rel='stylesheet'], style"))
+      .map((node) => node.outerHTML)
+      .join("\n");
+
+    // Write print content with fixed width
     printWindow.document.write(`
       <html>
         <head>
-          <title>Invoice #${orderNo}</title>
+          <title>Invoice</title>
+          ${styles}
           <style>
             * { -webkit-print-color-adjust: exact; color-adjust: exact; }
-            body {
-              font-family: "Helvetica", "Arial", sans-serif;
-              font-size: 15px;
-              font-weight: 600;
-              line-height: 1.5;
-              color: #000 !important;
-              margin: 0;
-              padding: 0;
-              width: 350px;
+            body { 
+              margin: 0; 
+              padding: 10px; 
+              background: white; 
+              width: 350px !important; 
             }
-            .invoice {
-              width: 350px;
-              padding: 5px;
-              margin: 0 auto;
-              background: #fff;
-              color: #000;
+            #live-invoice { 
+              width: 350px !important; 
             }
-            .center { text-align: center; }
-            .bold { font-weight: 700; }
-            .small { font-size: 14px; font-weight: 600; }
-            .header { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
-            .border { border-bottom: 1px dashed #000; margin: 3px 0; }
-            .double-border { border-bottom: 2px dashed #000; margin: 3px 0; }
-            .flex { display: flex; justify-content: space-between; margin: 2px 0; }
-            .item-name { width: 55%; word-break: break-word; }
-            .qty { width: 10%; text-align: right; }
-            .price { width: 15%; text-align: right; }
-            .amt { width: 20%; text-align: right; }
-            .totals { display: flex; justify-content: space-between; font-size: 15px; margin-top: 2px; }
-            .grand-total { font-size: 16px; font-weight: 700; margin-top: 4px; }
-            .footer { margin-top: 6px; font-size: 13px; font-weight: 600; text-align: center; }
             @media print {
-              @page { size: auto; margin: 0; }
-              body, .invoice { width: 350px; height: auto; margin: 0; }
+              @page { size: 350px auto; margin: 0; }
+              body, #live-invoice { width: 350px !important; }
             }
           </style>
         </head>
         <body>
-          ${document.getElementById("live-invoice").outerHTML}
+          ${invoiceHTML}
         </body>
       </html>
     `);
 
     printWindow.document.close();
+
     printWindow.onload = () => {
       printWindow.focus();
       printWindow.print();
@@ -81,7 +82,9 @@ const Cart = ({ cartItems, setCartIems, subTotalAmount, discount, setDiscount, s
     setSubTotalAmount(0);
   };
 
-  const orderNo = Math.floor(Math.random() * 1000000).toString().padStart(6, "0");
+  const orderNo = Math.floor(Math.random() * 1000000)
+    .toString()
+    .padStart(6, "0");
 
   return (
     <div>
@@ -104,9 +107,12 @@ const Cart = ({ cartItems, setCartIems, subTotalAmount, discount, setDiscount, s
       {/* Live Preview */}
       <div
         id="live-invoice"
-        className="invoice border border-gray-400 p-3 w-[350px] bg-white text-black text-[15px] leading-snug font-semibold"
+        ref={invoiceRef}
+        className="border border-gray-400 p-3 w-[350px] bg-white text-black text-[15px] leading-snug font-semibold"
       >
-        <div className="text-center text-lg font-bold">{shop_name.toUpperCase()}</div>
+        <div className="text-center text-lg font-bold">
+          {shop_name.toUpperCase()}
+        </div>
         <div className="text-center text-sm font-semibold">{address}</div>
         <div className="text-center text-sm font-semibold">{mobile_number}</div>
         <div className="text-center text-sm font-bold">CASH BILL</div>
@@ -137,7 +143,8 @@ const Cart = ({ cartItems, setCartIems, subTotalAmount, discount, setDiscount, s
         <div className="flex justify-between text-sm font-medium">
           <span>Items: {cartItems.length}</span>
           <span>
-            Total Qty: {cartItems.reduce((acc, item) => acc + item.numberOfItems, 0)}
+            Total Qty:{" "}
+            {cartItems.reduce((acc, item) => acc + item.numberOfItems, 0)}
           </span>
         </div>
         <div className="flex justify-between text-sm font-bold">
@@ -155,7 +162,9 @@ const Cart = ({ cartItems, setCartIems, subTotalAmount, discount, setDiscount, s
           <span>₹{subTotalAmount - (subTotalAmount * discount) / 100}.00</span>
         </div>
         <div className="border-b border-dashed border-black my-1"></div>
-        <div className="text-center text-sm font-semibold">THANK YOU. VISIT AGAIN</div>
+        <div className="text-center text-sm font-semibold">
+          THANK YOU. VISIT AGAIN
+        </div>
       </div>
     </div>
   );
