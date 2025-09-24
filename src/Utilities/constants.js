@@ -102,4 +102,4 @@ export const defultImg = "https://tse1.mm.bing.net/th/id/OIP.vBJ_3mdeZ9ewidACa1a
 
 export const shop_name = "Sri Raghavendra crackers";
 export const address = "Civil Line, Narayanpet, Telangana, India 509120";
-export const mobile_number = 7680081515;
+export const mobile_number = "7680081515, 7731969514";
