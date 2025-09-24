@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import CartContext from "../Utilities/Context";
+import { defultImg } from "../Utilities/constants";
 
 const LeftDB = ({ crackers, setCrackers, defaultCrackers }) => {
   const [searchVal, setSearchVal] = useState("");
@@ -56,8 +57,8 @@ const LeftDB = ({ crackers, setCrackers, defaultCrackers }) => {
               className="bg-white rounded-xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1"
             >
               <img
-                src={cracker.image}
-                alt={cracker.name}
+                src={defultImg}
+                alt="logo"
                 className="rounded-t-xl w-full h-40 object-cover"
               />
               <div className="p-4">
